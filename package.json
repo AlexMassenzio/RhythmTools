@@ -1,14 +1,14 @@
 {
   "name": "com.alexmassenzio.rhythmtools",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "displayName": "Rhythm Tools",
   "description": "A set of simple tools to create rhythm based mechanics and visual effects.",
   "unity": "2021.3",
   "unityRelease": "16f1",
   "keywords": [
-    "keyword1",
-    "keyword2",
-    "keyword3"
+    "rhythm",
+    "tools",
+    "conductor"
   ],
   "author": {
     "name": "Alex Massenzio",

@@ -9,17 +9,70 @@ using UnityEngine;
 
 public class Conductor : MonoBehaviour
 {
-
+    /// <summary>
+    /// The song's beats per minute
+    /// </summary>
     public float bpm = 120f;
-    public float crotchet;
-    public float songPosition;
-    public float deltaSongPosition;
-    public float offset = 0f; //positive means the song must be minussed.
-    public float beatDuration;
-    public int beat;
+    /// <summary>
+    /// The amount of time (in seconds) that has passed since the start of the beat.
+    /// </summary>
+    public float crotchet
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The percentage of time that has passed within the current beat.
+    /// The start of the beat is 0 while the end of the beat is 1.
+    /// </summary>
+    public float crotchetNormalized
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The position of the song since the beginning of the first beat.
+    /// </summary>
+    public float songPosition
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The amount of time since the last conductor update.
+    /// </summary>
+    public float deltaSongPosition
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The amount of time between the start of the audio file and the first beat of the song.
+    /// </summary>
+    public float offset = 0f;
+    /// <summary>
+    /// The amount of time any given beat lasts for.
+    /// </summary>
+    public float beatDuration
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The current beat number the song is on.
+    /// </summary>
+    public int beat
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The amount of time the song will delay before playing.
+    /// </summary>
     public float countdownToStart = 3f;
 
-    public float pitch;
+    /// <summary>
+    /// The pitch (speed) that the song will play at.
+    /// This is obtained directly from the AudioSource connected to this object.
+    /// </summary>
+    public float pitch
+    {
+        get; private set;
+    }
 
     private AudioSource song;
     private AudioSource beatTick;
@@ -33,12 +86,20 @@ public class Conductor : MonoBehaviour
         song = GetComponent<AudioSource>();
         beat = 0;
         crotchet = 0;
+        crotchetNormalized = 0f;
         beatDuration = 60f / bpm;
         beatTick = transform.GetChild(0).GetComponent<AudioSource>();
         pitch = song.pitch;
-        StartCountdown();
+        if (!song.playOnAwake)
+        {
+            StartCountdown();
+        }
+        else
+        {
+            countdownFinished = true;
+        }
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -51,17 +112,12 @@ public class Conductor : MonoBehaviour
         deltaSongPosition = songPosition - oldSongPosition;
 
         crotchet = songPosition - (beatDuration * beat);
+        crotchetNormalized = crotchet / beatDuration;
 
         if (crotchet >= beatDuration)
         {
             beat++;
-
-            //beatTick.Play();
-        }
-
-        if(song.clip.length - songPosition < 0.5)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            beatTick.Play();
         }
     }
 
