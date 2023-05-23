@@ -79,8 +79,7 @@ public class Conductor : MonoBehaviour
 
     private bool countdownFinished;
 
-    // Use this for initialization
-    void Start()
+    void Awake()
     {
         countdownFinished = false;
         song = GetComponent<AudioSource>();
@@ -100,7 +99,6 @@ public class Conductor : MonoBehaviour
         }
     }
     
-    // Update is called once per frame
     void Update()
     {
         pitch = song.pitch;
