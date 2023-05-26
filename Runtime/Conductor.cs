@@ -98,7 +98,7 @@ public class Conductor : MonoBehaviour
             countdownFinished = true;
         }
     }
-    
+
     void Update()
     {
         pitch = song.pitch;
@@ -116,6 +116,20 @@ public class Conductor : MonoBehaviour
         {
             beat++;
             beatTick.Play();
+        }
+
+        //Reverse!
+        if (crotchet <= beatDuration * -1f)
+        {
+            beat--;
+            beatTick.Play();
+        }
+
+        //If we reversed to the end of the song...
+        if (!song.isPlaying && song.pitch < 0f)
+        {
+            song.time = song.clip.length;
+            song.Play();
         }
     }
 

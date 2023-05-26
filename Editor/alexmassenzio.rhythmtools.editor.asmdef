@@ -1,9 +1,8 @@
 {
-    "name": "alexmassenzio.rhythmtools.sample",
+    "name": "alexmassenzio.rhythmtools.editor",
     "rootNamespace": "",
     "references": [
-        "GUID:a60ed6a253241d34bb6661a2a23d222e",
-        "GUID:a73df367fbf357e4896b3094e33a096e"
+        "GUID:a60ed6a253241d34bb6661a2a23d222e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
