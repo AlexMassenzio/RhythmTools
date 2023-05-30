@@ -5,6 +5,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Conductor : MonoBehaviour
@@ -13,6 +14,10 @@ public class Conductor : MonoBehaviour
     /// The song's beats per minute
     /// </summary>
     public float bpm = 120f;
+    public float baseBpm
+    {
+        get; private set;
+    }
     /// <summary>
     /// The amount of time (in seconds) that has passed since the start of the beat.
     /// </summary>
@@ -88,6 +93,7 @@ public class Conductor : MonoBehaviour
         crotchetNormalized = 0f;
         beatDuration = 60f / bpm;
         beatTick = transform.GetChild(0).GetComponent<AudioSource>();
+        baseBpm = bpm;
         pitch = song.pitch;
         if (!song.playOnAwake)
         {
@@ -101,36 +107,47 @@ public class Conductor : MonoBehaviour
 
     void Update()
     {
-        pitch = song.pitch;
-        float oldSongPosition = songPosition;
-        if (countdownFinished)
+        if (song.isPlaying)
         {
-            songPosition = song.time - offset;
+            pitch = song.pitch;
+            bpm = baseBpm * pitch;
+
+            float oldSongPosition = songPosition;
+            if (countdownFinished)
+            {
+                songPosition = song.time - offset;
+            }
+            deltaSongPosition = songPosition - oldSongPosition;
+
+            crotchet = songPosition - (beatDuration * beat);
+            crotchetNormalized = crotchet / beatDuration;
+
+            if (crotchetNormalized >= 1 || crotchetNormalized <= 0)
+            {
+                beat = (int)(songPosition / beatDuration);
+                beatTick.Play();
+            }
         }
-        deltaSongPosition = songPosition - oldSongPosition;
-
-        crotchet = songPosition - (beatDuration * beat);
-        crotchetNormalized = crotchet / beatDuration;
-
-        if (crotchet >= beatDuration)
-        {
-            beat++;
-            beatTick.Play();
-        }
-
-        //Reverse!
-        if (crotchet <= beatDuration * -1f)
-        {
-            beat--;
-            beatTick.Play();
-        }
-
         //If we reversed to the end of the song...
-        if (!song.isPlaying && song.pitch < 0f)
+        else if (song.pitch < 0f)
         {
-            song.time = song.clip.length;
+            Debug.Log("setting time.");
+            song.time = song.clip.length - 0.01f;
             song.Play();
         }
+    }
+
+    public string GetDebugText()
+    {
+        var builder = new StringBuilder();
+        builder
+            .Append("Song Position: " + songPosition).AppendLine()
+            .Append("Current BPM: " + bpm).AppendLine()
+            .Append("Base BPM: " + baseBpm).AppendLine()
+            .Append("Crotchet: " + crotchet).AppendLine()
+            .Append("Crotchet Normalized: " + crotchetNormalized).AppendLine()
+            .Append("Beat: " + beat).AppendLine();
+        return builder.ToString();
     }
 
     public void StartCountdown()

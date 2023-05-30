@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,16 @@ public class Cube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.speed = conductor.bpm / 60 * conductor.pitch;
+        float animatorSpeed = Math.Abs(conductor.bpm / 60);
+        if (conductor.bpm < 0)
+        {
+            animator.SetFloat("multiplier", -1f);
+        }
+        else
+        {
+            animator.SetFloat("multiplier", 1f);
+        }
+        animator.speed = animatorSpeed;
+        Debug.Log("Animator speed: " + animator.speed);
     }
 }

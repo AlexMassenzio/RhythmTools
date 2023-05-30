@@ -4,6 +4,7 @@ using UnityEngine;
 public class RhythmToolsWindow : EditorWindow
 {
     private const string CONDUCTOR_PREFAB_PATH = "Packages/com.alexmassenzio.rhythmtools/Runtime/Conductor.prefab";
+
     [MenuItem("Window/RhythmTools")]
     public static void ShowWindow()
     {
@@ -14,11 +15,12 @@ public class RhythmToolsWindow : EditorWindow
     {
         GUILayout.Label("Conductors:", EditorStyles.boldLabel);
 
-
         Conductor[] conductorsInScene = FindObjectsOfType<Conductor>();
         foreach (Conductor conductor in conductorsInScene)
         {
-            GUILayout.Label(conductor.gameObject.name);
+            AudioSource audioSource = conductor.GetComponent<AudioSource>();
+            string bpm = conductor.bpm + " BPM";
+            GUILayout.Label(audioSource.clip.name + " - " + bpm);
         }
 
         if (GUILayout.Button("Create Conductor"))
@@ -37,10 +39,7 @@ public class RhythmToolsWindow : EditorWindow
             EditorGUILayout.HelpBox(conductorsInScene + " Conductors found in the scene. Rhythm tools supports multiple, just make sure you keep track of them!", MessageType.Warning);
         }
     }
-    void Update()
-    {
-        Debug.Log("??");
-    }
+
     private GameObject LoadConductorPrefab()
     {
         return AssetDatabase.LoadAssetAtPath<GameObject>(CONDUCTOR_PREFAB_PATH);
