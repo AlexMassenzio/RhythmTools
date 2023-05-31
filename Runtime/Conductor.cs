@@ -8,12 +8,18 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// A class that synchronizes game events with a music track.
+/// </summary>
 public class Conductor : MonoBehaviour
 {
     /// <summary>
-    /// The song's beats per minute
+    /// The beats per minute of the music track, accounting for pitch.
     /// </summary>
     public float bpm = 120f;
+    /// <summary>
+    /// The beats per minute of the music track, not accounting for pitch.
+    /// </summary>
     public float baseBpm
     {
         get; private set;
@@ -137,6 +143,10 @@ public class Conductor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns a string with debug information about the current state of the conductor.
+    /// </summary>
+    /// <returns>A string with debug information.</returns>
     public string GetDebugText()
     {
         var builder = new StringBuilder();
@@ -150,7 +160,10 @@ public class Conductor : MonoBehaviour
         return builder.ToString();
     }
 
-    public void StartCountdown()
+    /// <summary>
+    /// Adds a countdown to the beginning of the music track.
+    /// </summary>
+    private void StartCountdown()
     {
         StartCoroutine(StartCountdownHelper());
     }
