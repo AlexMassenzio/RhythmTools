@@ -24,6 +24,17 @@ public class Conductor : MonoBehaviour
     {
         get; private set;
     }
+    public int beat
+    {
+        get; private set;
+    }
+    /// <summary>
+    /// The amount of time any given beat lasts for.
+    /// </summary>
+    public float beatDuration
+    {
+        get; private set;
+    }
     /// <summary>
     /// The amount of time (in seconds) that has passed since the start of the beat.
     /// </summary>
@@ -37,7 +48,7 @@ public class Conductor : MonoBehaviour
     /// </summary>
     public float crotchetNormalized
     {
-        get; private set;
+        get { return crotchet / beatDuration; }
     }
     /// <summary>
     /// The position of the song since the beginning of the first beat.
@@ -58,19 +69,8 @@ public class Conductor : MonoBehaviour
     /// </summary>
     public float offset = 0f;
     /// <summary>
-    /// The amount of time any given beat lasts for.
-    /// </summary>
-    public float beatDuration
-    {
-        get; private set;
-    }
-    /// <summary>
     /// The current beat number the song is on.
     /// </summary>
-    public int beat
-    {
-        get; private set;
-    }
     /// <summary>
     /// The amount of time the song will delay before playing.
     /// </summary>
@@ -95,9 +95,8 @@ public class Conductor : MonoBehaviour
         countdownFinished = false;
         song = GetComponent<AudioSource>();
         beat = 0;
-        crotchet = 0;
-        crotchetNormalized = 0f;
         beatDuration = 60f / bpm;
+        crotchet = 0;
         beatTick = transform.GetChild(0).GetComponent<AudioSource>();
         baseBpm = bpm;
         pitch = song.pitch;
@@ -126,7 +125,6 @@ public class Conductor : MonoBehaviour
             deltaSongPosition = songPosition - oldSongPosition;
 
             crotchet = songPosition - (beatDuration * beat);
-            crotchetNormalized = crotchet / beatDuration;
 
             if (crotchetNormalized >= 1 || crotchetNormalized <= 0)
             {

@@ -18,9 +18,25 @@ public class RhythmToolsWindow : EditorWindow
         Conductor[] conductorsInScene = FindObjectsOfType<Conductor>();
         foreach (Conductor conductor in conductorsInScene)
         {
+            GUILayout.BeginVertical("box");
             AudioSource audioSource = conductor.GetComponent<AudioSource>();
             string bpm = conductor.bpm + " BPM";
             GUILayout.Label(audioSource.clip.name + " - " + bpm);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Play"))
+            {
+                audioSource.Play();
+            }
+            if (GUILayout.Button("Pause"))
+            {
+                audioSource.Pause();
+            }
+            if (GUILayout.Button("Stop"))
+            {
+                audioSource.Stop();
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         if (GUILayout.Button("Create Conductor"))

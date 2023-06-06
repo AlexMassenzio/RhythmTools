@@ -19,6 +19,8 @@ public class Cube : MonoBehaviour
     void Update()
     {
         float animatorSpeed = Math.Abs(conductor.bpm / 60);
+
+        // Unity does not let you set negative animator speed, so we have to use a multiplier instead...
         if (conductor.bpm < 0)
         {
             animator.SetFloat("multiplier", -1f);
@@ -27,7 +29,12 @@ public class Cube : MonoBehaviour
         {
             animator.SetFloat("multiplier", 1f);
         }
+
+        if (!conductor.GetComponent<AudioSource>().isPlaying)
+        {
+            animatorSpeed = 0f;
+        }
+
         animator.speed = animatorSpeed;
-        Debug.Log("Animator speed: " + animator.speed);
     }
 }
