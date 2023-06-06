@@ -85,7 +85,7 @@ public class Conductor : MonoBehaviour
         get; private set;
     }
 
-    private AudioSource song;
+    private RTAudioSource song;
     private AudioSource beatTick;
 
     private bool countdownFinished;
@@ -93,34 +93,36 @@ public class Conductor : MonoBehaviour
     void Awake()
     {
         countdownFinished = false;
-        song = GetComponent<AudioSource>();
+        song = new UnityAudioSource(GetComponent<AudioSource>());
         beat = 0;
         beatDuration = 60f / bpm;
         crotchet = 0;
         beatTick = transform.GetChild(0).GetComponent<AudioSource>();
         baseBpm = bpm;
-        pitch = song.pitch;
-        if (!song.playOnAwake)
+        pitch = song.GetSpeed();
+        if (countdownToStart > 0)
         {
+            song.Pause();
             StartCountdown();
         }
         else
         {
             countdownFinished = true;
+            song.Play();
         }
     }
 
     void Update()
     {
-        if (song.isPlaying)
+        if (song.IsPlaying())
         {
-            pitch = song.pitch;
+            pitch = song.GetSpeed();
             bpm = baseBpm * pitch;
 
             float oldSongPosition = songPosition;
             if (countdownFinished)
             {
-                songPosition = song.time - offset;
+                songPosition = song.GetTime() - offset;
             }
             deltaSongPosition = songPosition - oldSongPosition;
 
@@ -133,10 +135,10 @@ public class Conductor : MonoBehaviour
             }
         }
         //If we reversed to the end of the song...
-        else if (song.pitch < 0f)
+        else if (song.GetSpeed() < 0f)
         {
             Debug.Log("setting time.");
-            song.time = song.clip.length - 0.01f;
+            song.SetTime(song.GetLength() - 0.01f);
             song.Play();
         }
     }
