@@ -4,9 +4,16 @@
 */
 
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+
+#if RT_USE_FMOD
+using FMODUnity;
+#endif
+
+#if RT_USE_WWISE
+using AK.Wwise.Unity;
+#endif
 
 /// <summary>
 /// A class that synchronizes game events with a music track.
@@ -85,19 +92,29 @@ public class Conductor : MonoBehaviour
         get; private set;
     }
 
-    private RTAudioSource song;
-    private AudioSource beatTick;
+    public AudioSystem song;
+    private AudioSystem beatTick;
 
     private bool countdownFinished;
 
     void Awake()
     {
         countdownFinished = false;
-        song = new UnityAudioSource(GetComponent<AudioSource>());
+
+#if RT_USE_UNITY
+        song = new UnityAudioSystem(GetComponent<AudioSource>());
+        beatTick = new UnityAudioSystem(transform.GetChild(0).GetComponent<AudioSource>());
+#elif RT_USE_FMOD
+        song = new FMODAudioSystem(GetComponent<StudioEventEmitter>());
+        beatTick = new FMODAudioSystem(transform.GetChild(0).GetComponent<StudioEventEmitter>());
+#elif RT_USE_WWISE
+        song = new WwiseAudioSystem(GetComponent<AK.Wwise.Event>());
+        beatTick = new WwiseAudioSystem(transform.GetChild(0).GetComponent<AK.Wwise.Event>());
+#endif
+
         beat = 0;
         beatDuration = 60f / bpm;
         crotchet = 0;
-        beatTick = transform.GetChild(0).GetComponent<AudioSource>();
         baseBpm = bpm;
         pitch = song.GetSpeed();
         if (countdownToStart > 0)
@@ -138,7 +155,7 @@ public class Conductor : MonoBehaviour
         else if (song.GetSpeed() < 0f)
         {
             Debug.Log("setting time.");
-            song.SetTime(song.GetLength() - 0.01f);
+            song.SetTime(song.GetAudioLength() - 0.01f);
             song.Play();
         }
     }

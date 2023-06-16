@@ -30,7 +30,7 @@ public class Cube : MonoBehaviour
             animator.SetFloat("multiplier", 1f);
         }
 
-        if (!conductor.GetComponent<AudioSource>().isPlaying)
+        if (!conductor.song.IsPlaying())
         {
             animatorSpeed = 0f;
         }

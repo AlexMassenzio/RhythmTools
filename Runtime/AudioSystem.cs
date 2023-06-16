@@ -1,7 +1,7 @@
 /// <summary>
 /// An interface for an audio source that can be used by the conductor.
 /// </summary>
-public interface RTAudioSource
+public interface AudioSystem
 {
     /// <summary>
     /// The pitch (speed) that the song will play at.
@@ -24,9 +24,13 @@ public interface RTAudioSource
     /// </summary>
     bool IsPlaying();
     /// <summary>
+    /// The name of the audio clip.
+    /// </summary>
+    string GetAudioName();
+    /// <summary>
     /// The length of the audio clip in seconds.
     /// </summary>
-    float GetLength();
+    float GetAudioLength();
     /// <summary>
     /// The current position of the song in seconds.
     /// </summary>

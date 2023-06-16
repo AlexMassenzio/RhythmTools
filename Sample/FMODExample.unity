@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &139670851 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3392317854199342985, guid: f8eac58fb5c18e54b8c48e36073e9e1a, type: 3}
+  m_PrefabInstance: {fileID: 1286297027}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfe6249eafc053149af009ebbe244a2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &325982245
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,7 +478,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2304946602304706342, guid: f8eac58fb5c18e54b8c48e36073e9e1a, type: 3}
       propertyPath: PlayEvent
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3392317854199342985, guid: f8eac58fb5c18e54b8c48e36073e9e1a, type: 3}
+      propertyPath: countdownToStart
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6257825321339105641, guid: f8eac58fb5c18e54b8c48e36073e9e1a, type: 3}
       propertyPath: m_RootOrder
@@ -570,7 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126059f4584914b4491e260dd77f3c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conductor: {fileID: 0}
+  conductor: {fileID: 139670851}
 --- !u!114 &1431136260
 MonoBehaviour:
   m_ObjectHideFlags: 0

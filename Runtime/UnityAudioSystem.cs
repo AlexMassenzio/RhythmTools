@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class UnityAudioSource : RTAudioSource
+public class UnityAudioSystem : AudioSystem
 {
     AudioSource audioSource;
 
-    public UnityAudioSource(AudioSource audioSource)
+    public UnityAudioSystem(AudioSource audioSource)
     {
         this.audioSource = audioSource;
     }
@@ -33,8 +33,11 @@ public class UnityAudioSource : RTAudioSource
     {
         return audioSource.isPlaying;
     }
-
-    public float GetLength()
+    public string GetAudioName()
+    {
+        return audioSource.clip.name;
+    }
+    public float GetAudioLength()
     {
         return audioSource.clip.length;
     }
