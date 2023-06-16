@@ -11,10 +11,6 @@ using UnityEngine;
 using FMODUnity;
 #endif
 
-#if RT_USE_WWISE
-using AK.Wwise.Unity;
-#endif
-
 /// <summary>
 /// A class that synchronizes game events with a music track.
 /// </summary>
@@ -107,9 +103,6 @@ public class Conductor : MonoBehaviour
 #elif RT_USE_FMOD
         song = new FMODAudioSystem(GetComponent<StudioEventEmitter>());
         beatTick = new FMODAudioSystem(transform.GetChild(0).GetComponent<StudioEventEmitter>());
-#elif RT_USE_WWISE
-        song = new WwiseAudioSystem(GetComponent<AK.Wwise.Event>());
-        beatTick = new WwiseAudioSystem(transform.GetChild(0).GetComponent<AK.Wwise.Event>());
 #endif
 
         beat = 0;

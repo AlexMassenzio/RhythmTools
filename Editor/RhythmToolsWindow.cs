@@ -68,6 +68,10 @@ public class RhythmToolsWindow : EditorWindow
             else
             {
                 EditorGUILayout.HelpBox("Enter play mode to edit conductor(s).", MessageType.Info);
+                if (selectedAudioSystem == AUDIO_SYSTEM.FMOD)
+                {
+                    EditorGUILayout.HelpBox("FMOD Conductor is in an experimental state and most likely will not work!", MessageType.Warning);
+                }
             }
         }
 

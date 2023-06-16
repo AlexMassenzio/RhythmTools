@@ -1,6 +1,7 @@
 #if RT_USE_FMOD
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine;
 
 public class FMODAudioSystem : AudioSystem
 {
@@ -13,10 +14,15 @@ public class FMODAudioSystem : AudioSystem
         this.eventInstance = eventEmitter.EventInstance;
     }
 
+    /// <summary>
+    /// Returns the speed of the audio. 1 is normal speed, 2 is double speed, 0.5 is half speed.
+    /// GetSpeed() is not implemented for FMOD. Returning 1 as default.
+    /// </summary>
     public float GetSpeed()
     {
+        //GetSpeed() is not implemented for FMOD. Returning 1 as default.
         eventEmitter.EventInstance.getPitch(out float pitch);
-        return pitch;
+        return 1;
     }
 
     public void Play()
