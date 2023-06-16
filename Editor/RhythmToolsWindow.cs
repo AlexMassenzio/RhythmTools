@@ -1,19 +1,29 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.Build.Player;
 
 public enum AUDIO_SYSTEM
 {
     Unity,
-    FMOD,
-    Wwise
+    FMOD
 }
 
 public class RhythmToolsWindow : EditorWindow
 {
-    private const string CONDUCTOR_PREFAB_PATH = "Packages/com.alexmassenzio.rhythmtools/Runtime/Conductor.prefab";
-    public AUDIO_SYSTEM selectedAudioSystem;
+    private const string CONDUCTOR_PREFAB_PATH = "Packages/com.alexmassenzio.rhythmtools/Runtime/Prefabs/";
+    private AUDIO_SYSTEM selectedAudioSystem;
+
+    private Dictionary<AUDIO_SYSTEM, string> audioSystemDefineSymbols = new Dictionary<AUDIO_SYSTEM, string>()
+    {
+        { AUDIO_SYSTEM.Unity, "RT_USE_UNITY" },
+        { AUDIO_SYSTEM.FMOD, "RT_USE_FMOD" }
+    };
+
+    private Dictionary<AUDIO_SYSTEM, string> conductorPrefabs = new Dictionary<AUDIO_SYSTEM, string>()
+    {
+        { AUDIO_SYSTEM.Unity, "Conductor.prefab" },
+        { AUDIO_SYSTEM.FMOD, "FMODConductor.prefab" }
+    };
 
     [MenuItem("Window/RhythmTools")]
     public static void ShowWindow()
@@ -23,19 +33,9 @@ public class RhythmToolsWindow : EditorWindow
 
     private void OnGUI()
     {
+        selectedAudioSystem = (AUDIO_SYSTEM)EditorGUILayout.EnumPopup("Audio System", LoadAudioSystemSelection());
 
-
-        Dictionary<AUDIO_SYSTEM, string> audioSystemNames = new Dictionary<AUDIO_SYSTEM, string>()
-        {
-            { AUDIO_SYSTEM.Unity, "RT_USE_UNITY" },
-            { AUDIO_SYSTEM.FMOD, "RT_USE_FMOD" },
-            { AUDIO_SYSTEM.Wwise, "RT_USE_WWISE" }
-        };
-
-        selectedAudioSystem = (AUDIO_SYSTEM)EditorGUILayout.EnumPopup("Audio System", selectedAudioSystem);
-
-        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, audioSystemNames[selectedAudioSystem]);
-
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, audioSystemDefineSymbols[selectedAudioSystem]);
 
         GUILayout.Label("Conductors:", EditorStyles.boldLabel);
 
@@ -90,6 +90,20 @@ public class RhythmToolsWindow : EditorWindow
 
     private GameObject LoadConductorPrefab()
     {
-        return AssetDatabase.LoadAssetAtPath<GameObject>(CONDUCTOR_PREFAB_PATH);
+        string fullConductorPrefabPath = CONDUCTOR_PREFAB_PATH + conductorPrefabs[selectedAudioSystem];
+        return AssetDatabase.LoadAssetAtPath<GameObject>(fullConductorPrefabPath);
+    }
+
+    private AUDIO_SYSTEM LoadAudioSystemSelection()
+    {
+        string defineSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
+        foreach (KeyValuePair<AUDIO_SYSTEM, string> pair in audioSystemDefineSymbols)
+        {
+            if (EqualityComparer<string>.Default.Equals(pair.Value, defineSymbols))
+            {
+                return pair.Key;
+            }
+        }
+        return AUDIO_SYSTEM.Unity;
     }
 }

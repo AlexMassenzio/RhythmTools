@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 3392317854199342985}
   - component: {fileID: -2304946602304706342}
   m_Layer: 0
-  m_Name: FMOD_Conductor
+  m_Name: FMODConductor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
