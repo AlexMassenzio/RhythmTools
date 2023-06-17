@@ -88,8 +88,8 @@ public class Conductor : MonoBehaviour
         get; private set;
     }
 
-    public AudioSystem song;
-    private AudioSystem beatTick;
+    public IAudioSystem song;
+    private IAudioSystem beatTick;
 
     private bool countdownFinished;
 

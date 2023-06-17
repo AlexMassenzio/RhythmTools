@@ -1,7 +1,7 @@
 /// <summary>
 /// An interface for an audio source that can be used by the conductor.
 /// </summary>
-public interface AudioSystem
+public interface IAudioSystem
 {
     /// <summary>
     /// The pitch (speed) that the song will play at.

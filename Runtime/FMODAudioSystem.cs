@@ -3,7 +3,7 @@ using FMODUnity;
 using FMOD.Studio;
 using UnityEngine;
 
-public class FMODAudioSystem : AudioSystem
+public class FMODAudioSystem : IAudioSystem
 {
     private StudioEventEmitter eventEmitter;
     private EventInstance eventInstance;

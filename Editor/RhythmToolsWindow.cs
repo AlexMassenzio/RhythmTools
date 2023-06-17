@@ -46,7 +46,7 @@ public class RhythmToolsWindow : EditorWindow
             if (EditorApplication.isPlaying)
             {
                 GUILayout.BeginVertical("box");
-                AudioSystem audioSystem = conductor.song;
+                IAudioSystem audioSystem = conductor.song;
                 string bpm = conductor.bpm + " BPM";
                 GUILayout.Label(audioSystem.GetAudioName() + " - " + bpm);
                 GUILayout.BeginHorizontal();

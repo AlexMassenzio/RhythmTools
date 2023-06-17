@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnityAudioSystem : AudioSystem
+public class UnityAudioSystem : IAudioSystem
 {
     AudioSource audioSource;
 
