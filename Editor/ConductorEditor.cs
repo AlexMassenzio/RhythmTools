@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace RhythmTools.Editor
+namespace RhythmTools
 {
 
     [CustomEditor(typeof(Conductor))]
-    public class ConductorEditor : UnityEditor.Editor
+    public class ConductorEditor : Editor
     {
         public override void OnInspectorGUI()
         {

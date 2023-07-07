@@ -1,6 +1,6 @@
 {
   "name": "com.alexmassenzio.rhythmtools",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "displayName": "Rhythm Tools",
   "description": "A set of simple tools to create rhythm based mechanics and visual effects.",
   "unity": "2021.3",

@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace RhythmTools.Editor
+namespace RhythmTools
 {
     public enum AUDIO_SYSTEM
     {
