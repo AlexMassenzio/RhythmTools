@@ -3,90 +3,93 @@ using FMODUnity;
 using FMOD.Studio;
 using UnityEngine;
 
-public class FMODAudioSystem : IAudioSystem
+namespace RhythmTools.FMOD
 {
-    private StudioEventEmitter eventEmitter;
-    private EventInstance eventInstance;
-
-    public FMODAudioSystem(StudioEventEmitter eventEmitter)
+    public class FMODAudioSystem : IAudioSystem
     {
-        this.eventEmitter = eventEmitter;
-        this.eventInstance = eventEmitter.EventInstance;
-    }
+        private StudioEventEmitter eventEmitter;
+        private EventInstance eventInstance;
 
-    /// <summary>
-    /// Returns the speed of the audio. 1 is normal speed, 2 is double speed, 0.5 is half speed.
-    /// GetSpeed() is not implemented for FMOD. Returning 1 as default.
-    /// </summary>
-    public float GetSpeed()
-    {
-        //GetSpeed() is not implemented for FMOD. Returning 1 as default.
-        eventEmitter.EventInstance.getPitch(out float pitch);
-        return 1;
-    }
-
-    public void Play()
-    {
-        if (!eventInstance.isValid())
+        public FMODAudioSystem(StudioEventEmitter eventEmitter)
         {
-            eventEmitter.Play();
-            eventInstance = eventEmitter.EventInstance;
+            this.eventEmitter = eventEmitter;
+            this.eventInstance = eventEmitter.EventInstance;
         }
-        else
+
+        /// <summary>
+        /// Returns the speed of the audio. 1 is normal speed, 2 is double speed, 0.5 is half speed.
+        /// GetSpeed() is not implemented for FMOD. Returning 1 as default.
+        /// </summary>
+        public float GetSpeed()
         {
-            eventInstance.setPaused(false);
+            //GetSpeed() is not implemented for FMOD. Returning 1 as default.
+            eventEmitter.EventInstance.getPitch(out float pitch);
+            return 1;
         }
-    }
 
-    public void Stop()
-    {
-        eventEmitter.Stop();
-    }
-
-    public void Pause()
-    {
-        if (eventInstance.isValid())
+        public void Play()
         {
-            eventEmitter.EventInstance.setPaused(true);
+            if (!eventInstance.isValid())
+            {
+                eventEmitter.Play();
+                eventInstance = eventEmitter.EventInstance;
+            }
+            else
+            {
+                eventInstance.setPaused(false);
+            }
         }
-    }
 
-    public bool IsPlaying()
-    {
-        if (eventInstance.isValid())
+        public void Stop()
         {
-            PLAYBACK_STATE state;
-            eventInstance.getPlaybackState(out state);
-            return state == PLAYBACK_STATE.PLAYING;
+            eventEmitter.Stop();
         }
-        else
+
+        public void Pause()
         {
-            return false;
+            if (eventInstance.isValid())
+            {
+                eventEmitter.EventInstance.setPaused(true);
+            }
         }
-    }
 
-    public string GetAudioName()
-    {
-        return eventEmitter.name;
-    }
+        public bool IsPlaying()
+        {
+            if (eventInstance.isValid())
+            {
+                PLAYBACK_STATE state;
+                eventInstance.getPlaybackState(out state);
+                return state == PLAYBACK_STATE.PLAYING;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-    public float GetAudioLength()
-    {
-        eventEmitter.EventDescription.getLength(out int length);
-        return length;
-    }
+        public string GetAudioName()
+        {
+            return eventEmitter.name;
+        }
 
-    public float GetTime()
-    {
-        eventEmitter.EventInstance.getTimelinePosition(out int time);
-        float timeInSeconds = time / 1000f;
-        return timeInSeconds;
-    }
+        public float GetAudioLength()
+        {
+            eventEmitter.EventDescription.getLength(out int length);
+            return length;
+        }
 
-    public void SetTime(float time)
-    {
-        int timeInMilliseconds = (int)(time * 1000);
-        eventEmitter.EventInstance.setTimelinePosition(timeInMilliseconds);
+        public float GetTime()
+        {
+            eventEmitter.EventInstance.getTimelinePosition(out int time);
+            float timeInSeconds = time / 1000f;
+            return timeInSeconds;
+        }
+
+        public void SetTime(float time)
+        {
+            int timeInMilliseconds = (int)(time * 1000);
+            eventEmitter.EventInstance.setTimelinePosition(timeInMilliseconds);
+        }
     }
 }
 #endif

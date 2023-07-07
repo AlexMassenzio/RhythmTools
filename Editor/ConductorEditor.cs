@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-[CustomEditor(typeof(Conductor))]
-public class ConductorEditor : Editor
+namespace RhythmTools.Editor
 {
-    public override void OnInspectorGUI()
+
+    [CustomEditor(typeof(Conductor))]
+    public class ConductorEditor : UnityEditor.Editor
     {
-        DrawDefaultInspector();
-        Conductor myConductor = (Conductor)target;
-        EditorGUILayout.IntField("Beat Count", myConductor.beat);
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            Conductor myConductor = (Conductor)target;
+            EditorGUILayout.IntField("Beat Count", myConductor.beat);
+        }
     }
 }

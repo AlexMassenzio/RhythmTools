@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using RhythmTools;
 
 public class ConductorDebug : MonoBehaviour
 {
